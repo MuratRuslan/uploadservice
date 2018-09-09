@@ -12,7 +12,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,6 +78,33 @@ public class DefaultStorageService implements StorageService {
         } catch (Exception e) {
             return image;
         }
+    }
+
+    @SneakyThrows
+    @Override
+    public byte[] resizeImage(File image, float percent) {
+        BufferedImage original = ImageIO.read(image);
+        int width = (int)(original.getWidth() * percent);
+        int height = (int)(original.getHeight() * percent);
+        BufferedImage resized = new BufferedImage(width, height, original.getType());
+        Graphics2D g2 = resized.createGraphics();
+        g2.drawImage(original, 0, 0, width, height, null);
+        g2.dispose();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(resized, "jpg", byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    @SneakyThrows
+    @Override
+    public byte[] resizeImage(File image, String size) {
+        if(size.equalsIgnoreCase("s")) {
+            return resizeImage(image, 0.25f);
+        }
+        if(size.equalsIgnoreCase("m")) {
+            return resizeImage(image, 0.5f);
+        }
+        return resizeImage(image, 1f);
     }
 
     @Override
