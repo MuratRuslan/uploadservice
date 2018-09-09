@@ -26,10 +26,11 @@ public class MainController {
 
 
     @GetMapping("/files/{filename:.+}")
+
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE,
+                "image/jpeg").body(file);
     }
 
 }
