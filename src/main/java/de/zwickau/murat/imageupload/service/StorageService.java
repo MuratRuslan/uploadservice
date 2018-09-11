@@ -11,8 +11,6 @@ public interface StorageService {
 
     Resource loadAsResource(String filename);
 
-
-
     Image store(MultipartFile file);
 
     byte[] resizeImage(File image, float percent);

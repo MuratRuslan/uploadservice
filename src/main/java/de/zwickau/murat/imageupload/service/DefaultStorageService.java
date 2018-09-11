@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
-import javax.transaction.Transactional;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -60,7 +59,6 @@ public class DefaultStorageService implements StorageService {
     }
 
 
-    @Transactional
     @Override
     public Image store(MultipartFile file) {
         Image image = new Image();
